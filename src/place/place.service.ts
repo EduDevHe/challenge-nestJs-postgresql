@@ -5,6 +5,7 @@ import { CreatePlaceDto } from './dto/create-place.dto';
 import { PlaceReository } from './repositories/place-repository';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
 import { CreatPlaceException } from './exceptions/creat-place.exception';
+import { GetPlaceDto } from './dto/get-place.dto';
 @Injectable()
 export class PlaceService implements PlaceReository {
   constructor(private prisma: PrismaService) {}
@@ -23,7 +24,7 @@ export class PlaceService implements PlaceReository {
 
     return place;
   }
-  async findAll(): Promise<CreatePlaceDto[]> {
+  async findAll(): Promise<GetPlaceDto[]> {
     const allPlaces = await this.prisma.place.findMany();
 
     if (!allPlaces || allPlaces.length === 0) {
@@ -33,19 +34,19 @@ export class PlaceService implements PlaceReository {
     return allPlaces;
   }
 
-  // findOne(id: number) {
-  //   const place = await this.prisma.place.findUnique({
-  //     where: {
-  //       id: id,
-  //     },
-  //   });
-  //
-  //   if (!place) {
-  //     throw new NotFoundException('Item not found');
-  //   }
-  //
-  //   return `This action returns a #${id} place`;
-  // }
+  async findOne(id: number): Promise<GetPlaceDto> {
+    const place = await this.prisma.place.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!place) {
+      throw new PlaceNotFoundException('Place not found');
+    }
+
+    return place;
+  }
 
   // update(id: number, updatePlaceDto: UpdatePlaceDto) {
   //   return `This action updates a #${id} place`;
