@@ -4,16 +4,19 @@ import { PrismaService } from 'src/database/prisma.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { PlaceReository } from './repositories/place-repository';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
-import { CreatPlaceException } from './exceptions/creat-place.exception';
 import { GetPlaceDto } from './dto/get-place.dto';
+import { WithoutParameterException } from './exceptions/without-parameter.exception';
 @Injectable()
 export class PlaceService implements PlaceReository {
   constructor(private prisma: PrismaService) {}
 
   async create({ name, city, state }: CreatePlaceDto): Promise<CreatePlaceDto> {
-    if (name === '') throw new CreatPlaceException('The name must be valid');
-    if (city === '') throw new CreatPlaceException('The city must be valid');
-    if (state === '') throw new CreatPlaceException('The state must be valid');
+    if (name === '')
+      throw new WithoutParameterException('The name must be valid');
+    if (city === '')
+      throw new WithoutParameterException('The city must be valid');
+    if (state === '')
+      throw new WithoutParameterException('The state must be valid');
     const place = await this.prisma.place.create({
       data: {
         name,
@@ -48,6 +51,36 @@ export class PlaceService implements PlaceReository {
     return place;
   }
 
+  async search(
+    name: string,
+    city: string,
+    state: string,
+  ): Promise<GetPlaceDto[]> {
+    if (!name && !city && !state) {
+      throw new WithoutParameterException(
+        'You must pass a parameter to the search',
+      );
+    }
+
+    const searchPlaces = await this.prisma.place.findMany({
+      where: {
+        name: {
+          contains: name,
+        },
+        city: {
+          contains: city,
+        },
+        state: {
+          contains: state,
+        },
+      },
+    });
+
+    if (!searchPlaces || searchPlaces.length === 0) {
+      throw new PlaceNotFoundException();
+    }
+    return searchPlaces;
+  }
   // update(id: number, updatePlaceDto: UpdatePlaceDto) {
   //   return `This action updates a #${id} place`;
   // }
