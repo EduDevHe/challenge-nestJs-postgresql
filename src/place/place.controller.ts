@@ -15,7 +15,7 @@ import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
 import { CreatPlaceException } from './exceptions/creat-place.exception';
 @Controller('place')
 export class PlaceController {
-  constructor(private readonly placeService: PlaceService) {}
+  constructor(private readonly placeService: PlaceService) { }
 
   @Post()
   async create(@Body() createPlaceDto: CreatePlaceDto) {
@@ -71,17 +71,40 @@ export class PlaceController {
     }
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.placeService.findOne(+id);
-  // }
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
-  //   return this.placeService.update(+id, updatePlaceDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.placeService.remove(+id);
-  // }
-}
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      const place = await this.placeService.findOne(parseInt(id));
+      return { place };
+    } catch (error) {
+      if (error instanceof PlaceNotFoundException) {
+        throw new HttpException(
+          {
+            status: error.getStatus(),
+            error: error.message,
+            details: error.message,
+          },
+          error.getStatus(),
+        );
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Internal Server Error',
+          details: 'An internal server error occurred. Please try again later.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // @Patch(':id')
+    // update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
+    //   return this.placeService.update(+id, updatePlaceDto);
+    // }
+    //
+    // @Delete(':id')
+    // remove(@Param('id') id: string) {
+    //   return this.placeService.remove(+id);
+    // }
+  }
