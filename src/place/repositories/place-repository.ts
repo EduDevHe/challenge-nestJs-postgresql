@@ -1,4 +1,5 @@
 import { CreatePlaceDto } from '../dto/create-place.dto';
+import { GetPlaceDto } from '../dto/get-place.dto';
 export abstract class PlaceReository {
   abstract create({
     name,
@@ -6,5 +7,6 @@ export abstract class PlaceReository {
     state,
   }: CreatePlaceDto): Promise<CreatePlaceDto>;
 
-  abstract findAll(): Promise<CreatePlaceDto[]>;
+  abstract findAll(): Promise<GetPlaceDto[]>;
+  abstract findOne(id: number): Promise<GetPlaceDto>;
 }
