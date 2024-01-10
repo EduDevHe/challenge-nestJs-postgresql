@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 // import { UpdatePlaceDto } from './dto/update-place.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
-import { PlaceReository } from './repositories/place-repository';
+import { PlaceRepository } from './repositories/place-repository';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
 import { GetPlaceDto } from './dto/get-place.dto';
-import { WithoutParameterException } from './exceptions/without-parameter.exception';
+import { WithoutParameterException } from 'src/dto/without-parameter.exception';
+
 @Injectable()
-export class PlaceService implements PlaceReository {
+export class PlaceService implements PlaceRepository {
   constructor(private prisma: PrismaService) {}
 
   async create({ name, city, state }: CreatePlaceDto): Promise<CreatePlaceDto> {

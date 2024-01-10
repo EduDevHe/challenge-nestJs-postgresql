@@ -13,7 +13,7 @@ import { CreatePlaceDto } from './dto/create-place.dto';
 // import { UpdatePlaceDto } from './dto/update-place.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
-import { WithoutParameterException } from './exceptions/without-parameter.exception';
+import { WithoutParameterException } from 'src/dto/without-parameter.exception';
 @Controller('place')
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}

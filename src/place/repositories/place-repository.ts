@@ -1,6 +1,6 @@
 import { CreatePlaceDto } from '../dto/create-place.dto';
 import { GetPlaceDto } from '../dto/get-place.dto';
-export abstract class PlaceReository {
+export abstract class PlaceRepository {
   abstract create({
     name,
     city,
