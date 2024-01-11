@@ -8,31 +8,22 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
+  
+<p>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
+Challenge of building an API using nestjs [Nest](https://github.com/nestjs/nest) framework TypeScript and [PostgreSql](https://git.postgresql.org/gitweb/?p=postgresql.git;a=summary).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Clone
 
 ```bash
-$ pnpm install
+https://github.com/EduDevHe/challenge-nestJs-postgresql.git
 ```
 
 ## Running the app
@@ -47,30 +38,245 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+# API docs
+## Get place by id in API
 
-## Test
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
+### Url example
+```
+http://localhost:3000/place/1
+```
+### Method GET
+### Return
+``` 
+	{
+        "id": 1,
+        "name": "rio",
+        "state": "bahia",
+        "city": "barreiras",
+        "createdAt": "2024-01-11T00:28:03.143Z",
+        "updatedAt": "2024-01-11T00:28:03.143Z"
+    }
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Get all places in api
 
-## Stay in touch
+### Url example
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+	http://localhost:3000/place/all
+```
+### Method GET
 
+### Return
+```
+[
+	{
+		"id": 1,
+		"name": "rio",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T00:28:03.143Z",
+		"updatedAt": "2024-01-11T00:28:03.143Z"
+	},
+	{
+		"id": 2,
+		"name": "cais",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T00:28:19.339Z",
+		"updatedAt": "2024-01-11T00:28:19.339Z"
+	},
+	{
+		"id": 3,
+		"name": "centro",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T00:28:10.101Z",
+		"updatedAt": "2024-01-11T01:31:58.283Z"
+	}
+]
+```
+
+## Search places in API
+
+### Url example
+```
+http://localhost:3000/place?name=barreirinhas
+http://localhost:3000/place?name=barreirinhas&state=bahia
+
+```
+### Method GET
+
+### Return
+```
+[
+	{
+		"id": 5,
+		"name": "barreirinhas",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T00:28:03.143Z",
+		"updatedAt": "2024-01-11T00:28:03.143Z"
+	}
+]
+```
+# Create a place in the api
+### Url example
+
+```
+http://localhost:3000/place/create
+```
+### Method POST
+### Body
+
+```
+{
+"name":"centro",
+"city":"barreiras",
+"state":"bahia"
+}
+```
+
+### Return
+
+```
+{
+	"message": "Place created successfully",
+	"place": {
+		"id": 8,
+		"name": "centro",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T03:10:31.861Z",
+		"updatedAt": "2024-01-11T03:10:31.861Z"
+	}
+}
+```
+
+## Delete a place by id in the API
+
+>  You need to be authenticated with a valid jwt token
+
+### Url example
+```
+http://localhost:3000/place/8
+```
+### Method DELETE
+
+### Header example
+```
+method: 'DELETE',
+headers: {
+    'Authorization': `Bearer ${token}`,
+  },
+```
+### Return
+
+```
+{
+	"message": "Deleted place",
+	"place": {
+		"id": 8,
+		"name": "centro",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T03:10:31.861Z",
+		"updatedAt": "2024-01-11T03:10:31.861Z"
+	}
+}
+```
+## Upadate a place by id in the API
+
+>  You need to be authenticated with a valid jwt token
+
+### Example
+```
+http://localhost:3000/place/7
+```
+### Method PATCH
+
+### Header example
+```
+method: 'PATCH',
+headers: {
+    'Authorization': `Bearer ${token}`,
+  },
+```
+### Body
+```
+{
+"name":"centro"
+}
+
+```
+
+### Return
+
+```
+{
+	"message": "Updated place",
+	"place": {
+		"id": 7,
+		"name": "centro",
+		"state": "bahia",
+		"city": "barreiras",
+		"createdAt": "2024-01-11T00:28:19.339Z",
+		"updatedAt": "2024-01-11T04:18:01.780Z"
+	}
+}
+```
+## Create a user in the API
+
+### Url example
+```
+http://localhost:3000/auth/register
+```
+### Method POST
+### Body
+```
+{
+	"username":"test",
+	"email": "testEmail@email.com",
+	"password": "12345"
+}
+```
+### Return
+
+```
+{
+	"message": "User created successfully",
+	"username": "test",
+	"email": "testEmail@email.com",
+	"createdAt": "2024-01-11T03:27:02.702Z"
+}
+```
+
+# Login 
+
+### Url example
+```
+http://localhost:3000/auth/login
+```
+### Method POST
+### Body
+
+```
+{
+	"email": "testEmail@email.com",
+	"password": "12345"
+
+}
+```
+### Return
+
+```
+{
+	"message": "login successfully",
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QiLCJzdWIiOjUsImlhdCI6MTcwNDk0MzY1MSwiZXhwIjoxNzA0OTQ3MjUxfQ.Wa3lx6HUv6x5h90HBpb1DdF6ivHa8Ohybgr_ycekNHw",
+	"login": true
+}
+```
 ## License
 
 Nest is [MIT licensed](LICENSE).
