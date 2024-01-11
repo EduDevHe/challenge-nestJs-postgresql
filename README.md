@@ -26,7 +26,7 @@ Challenge of building an API using nestjs [Nest](https://github.com/nestjs/nest)
 https://github.com/EduDevHe/challenge-nestJs-postgresql.git
 ```
 
-## Running the app
+## Running the app 🚀 
 
 ```bash
 # development
@@ -38,7 +38,15 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
-# API docs
+
+# Docker 🐳
+
+```
+docker-compose up --build
+
+```
+
+# API docs 📚
 ## Get place by id in API
 
 ### Url example
@@ -48,7 +56,7 @@ http://localhost:3000/place/1
 ### Method GET
 ### Return
 ``` 
-	{
+    {
         "id": 1,
         "name": "rio",
         "state": "bahia",
@@ -128,6 +136,14 @@ http://localhost:3000/place?name=barreirinhas&state=bahia
 http://localhost:3000/place/create
 ```
 ### Method POST
+
+### Header example
+```
+method: 'GET',
+headers: {
+    'Authorization': `Bearer ${token}`,
+  },
+```
 ### Body
 
 ```
@@ -277,6 +293,4 @@ http://localhost:3000/auth/login
 	"login": true
 }
 ```
-## License
 
-Nest is [MIT licensed](LICENSE).
