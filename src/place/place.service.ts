@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-// import { UpdatePlaceDto } from './dto/update-place.dto';
+import { UpdatePlaceDto } from './dto/update-place.dto';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { PlaceRepository } from './repositories/place-repository';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
 import { GetPlaceDto } from './dto/get-place.dto';
-import { WithoutParameterException } from 'src/dto/without-parameter.exception';
+import { WithoutParameterException } from 'src/exceptions/without-parameter.exception';
 
 @Injectable()
 export class PlaceService implements PlaceRepository {
@@ -82,11 +82,46 @@ export class PlaceService implements PlaceRepository {
     }
     return searchPlaces;
   }
-  // update(id: number, updatePlaceDto: UpdatePlaceDto) {
-  //   return `This action updates a #${id} place`;
-  // }
+  async update(
+    id: number,
+    updatePlaceDto: UpdatePlaceDto,
+  ): Promise<GetPlaceDto> {
+    const place = await this.prisma.place.findUnique({
+      where: {
+        id: id,
+      },
+    });
 
-  remove(id: number) {
-    return `This action removes a #${id} place`;
+    if (!place) {
+      throw new PlaceNotFoundException('Place not found');
+    }
+
+    const updatedPlace = await this.prisma.place.update({
+      where: {
+        id: id,
+      },
+      data: {
+        ...updatePlaceDto,
+      },
+    });
+    return updatedPlace;
+  }
+
+  async remove(id: number): Promise<GetPlaceDto> {
+    const place = await this.prisma.place.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!place) {
+      throw new PlaceNotFoundException('Place not found');
+    }
+
+    return await this.prisma.place.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

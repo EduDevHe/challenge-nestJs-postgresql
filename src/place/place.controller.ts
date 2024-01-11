@@ -7,13 +7,18 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { PlaceService } from './place.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
-// import { UpdatePlaceDto } from './dto/update-place.dto';
+import { UpdatePlaceDto } from './dto/update-place.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { PlaceNotFoundException } from './exceptions/place-not-found.exception';
-import { WithoutParameterException } from 'src/dto/without-parameter.exception';
+import { WithoutParameterException } from 'src/exceptions/without-parameter.exception';
+
+import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/jwt.guard';
+
 @Controller('place')
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
@@ -129,13 +134,68 @@ export class PlaceController {
       );
     }
   }
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updatePlaceDto: UpdatePlaceDto) {
-  //   return this.placeService.update(+id, updatePlaceDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.placeService.remove(+id);
-  // }
+  @Patch(':id')
+  @UseGuards(AuthGuard(), JwtGuard)
+  async update(
+    @Param('id') id: string,
+    @Body() updatePlaceDto: UpdatePlaceDto,
+  ) {
+    try {
+      const place = await this.placeService.update(
+        parseInt(id),
+        updatePlaceDto,
+      );
+
+      return { message: 'Updatedplace', place };
+    } catch (error) {
+      if (error instanceof PlaceNotFoundException) {
+        throw new HttpException(
+          {
+            status: error.getStatus(),
+            error: error.message,
+            details: error.message,
+          },
+          error.getStatus(),
+        );
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Internal Server Error',
+          details: 'An internal server error occurred. Please try again later.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  @Delete(':id')
+  @UseGuards(AuthGuard(), JwtGuard)
+  async remove(@Param('id') id: string) {
+    try {
+      const place = await this.placeService.remove(parseInt(id));
+
+      return { message: 'Deleted place', place };
+    } catch (error) {
+      if (error instanceof PlaceNotFoundException) {
+        throw new HttpException(
+          {
+            status: error.getStatus(),
+            error: error.message,
+            details: error.message,
+          },
+          error.getStatus(),
+        );
+      }
+
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Internal Server Error',
+          details: 'An internal server error occurred. Please try again later.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
