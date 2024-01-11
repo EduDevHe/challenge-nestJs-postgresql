@@ -24,6 +24,7 @@ export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
 
   @Post('create')
+  @UseGuards(AuthGuard(), JwtGuard)
   async create(@Body() createPlaceDto: CreatePlaceDto) {
     try {
       const place = await this.placeService.create(createPlaceDto);

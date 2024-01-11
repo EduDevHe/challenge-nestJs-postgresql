@@ -10,3 +10,27 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - '5432:5432'
+    networks:
+      - app_network
+
+  node_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: node
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+
+networks:
+  app_network:
+    driver: bridge
