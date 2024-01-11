@@ -95,7 +95,6 @@ export class AuthService implements AuthRepository {
   }
 
   async validateToken(id: number): Promise<GetUserDto> {
-    console.log('service', id);
     const user = this.prisma.user.findUnique({
       where: {
         id: id,

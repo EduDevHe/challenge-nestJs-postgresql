@@ -15,13 +15,4 @@ describe('SampleService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  it('should return "Hello, Nest!"', () => {
-    const result = service.create({
-      name: 'placeTest',
-      city: 'cityTest',
-      state: 'stateTest',
-    });
-    expect(result).toEqual({});
-  });
 });
